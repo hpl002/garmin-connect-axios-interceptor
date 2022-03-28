@@ -1,0 +1,2 @@
+export GARMIN_CONNECT_USERNAME=example@example.com
+export GARMIN_CONNECT_PASSWORD=secretpassword
