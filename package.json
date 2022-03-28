@@ -1,0 +1,13 @@
+{
+  "name": "garmin-connect-express-middleware",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:hpl002/garmin-connect-express-middleware.git",
+  "author": "Herman Stoud Platou <hsplatou@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "express": "^4.17.3",
+    "puppeteer": "^13.5.1"
+  }
+}
