@@ -9,5 +9,8 @@
     "axios": "^0.26.1",
     "express": "^4.17.3",
     "puppeteer": "^13.5.1"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
