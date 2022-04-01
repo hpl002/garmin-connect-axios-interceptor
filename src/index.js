@@ -4,8 +4,8 @@ const axios = require("axios")
 const getCookies = async (debug = false) => {
   const garminUsername = process.env.GARMIN_CONNECT_USERNAME
   const garminPassword = process.env.GARMIN_CONNECT_PASSWORD
-  if (!garminUsername) throw new Error("missng env var GARMIN_CONNECT_USERNAME")
-  if (!garminPassword) throw new Error("missng env var GARMIN_CONNECT_PASSWORD")
+  if (!garminUsername) throw new Error("missing env var GARMIN_CONNECT_USERNAME")
+  if (!garminPassword) throw new Error("missing env var GARMIN_CONNECT_PASSWORD")
 
   const browser = await puppeteer.launch({ devtools: debug })
 
