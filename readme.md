@@ -29,14 +29,11 @@ this will give you a 1 hour ban
 
 
 ## todos
-parse array of cookies into string that can be added to to req
+ 
+more tests
+add a debug mode where it persists cookies to local file. this is to prevent rate limiting during frequent testing
 
-package the actual middleware
-middleware should check if it already has retrieved the cookies
-if no cookes the get some more
-if cookies return 401 the get some more
-if cookie returns any other response then fail
+if debug and local file exists then try to use this
 
 
-## where to continue:
-continue on actual middleware. need to validate cookies via ping to api + handle non 2xx cases
+ 
