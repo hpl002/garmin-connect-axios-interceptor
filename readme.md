@@ -43,9 +43,9 @@ const { data } = await axios(config)
 console.log("data", data);
 /*
     data {
-    date: 1647388800000,
-    version: 1647414215072,
-    weight: 73000,
+    date: 1648944000000,
+    version: 1648943008968,
+    weight: 81646.625,
     bmi: null,
     bodyFat: null,
     bodyWater: null,
@@ -55,9 +55,9 @@ console.log("data", data);
     visceralFat: null,
     metabolicAge: null,
     caloricIntake: null,
-    sourceType: 'USER_SETTING',
-    timestampGMT: 1647414215490
-    }
+    sourceType: 'MANUAL',
+    timestampGMT: 1648942980000
+}
 */
 
 ```
