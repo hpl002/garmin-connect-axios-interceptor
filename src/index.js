@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const axios = require("axios")
+const fs = require("fs")
 
 const formatCookies = (list) => {
   const formatted = [];
@@ -12,8 +13,6 @@ const formatCookies = (list) => {
 const getCookies = async (debug = false) => {
   const garminUsername = process.env.GARMIN_CONNECT_USERNAME
   const garminPassword = process.env.GARMIN_CONNECT_PASSWORD
-  if (!garminUsername) throw new Error("missing env var GARMIN_CONNECT_USERNAME")
-  if (!garminPassword) throw new Error("missing env var GARMIN_CONNECT_PASSWORD")
 
   const browser = await puppeteer.launch({ devtools: debug })
 
@@ -50,7 +49,7 @@ const getCookies = async (debug = false) => {
   return { cookies }
 }
 
-const ping = async () => {
+const ping = async (formattedCookies) => {
   const instance = axios.create()
 
   let config = {
@@ -67,7 +66,7 @@ const ping = async () => {
       'X-lang': 'en-US',
       'X-Requested-With': 'XMLHttpRequest',
       'Connection': 'keep-alive',
-      'Cookie': process.env.COOKIES,
+      'Cookie': formattedCookies,
       'Sec-Fetch-Dest': 'empty',
       'Sec-Fetch-Mode': 'no-cors',
       'Sec-Fetch-Site': 'same-origin',
@@ -91,8 +90,28 @@ const ping = async () => {
   return { status }
 }
 
+const parseStringToBoolean = (string) => {
+  if (string.toLowerCase() === "false") return false
+  return true
+}
+
 const getAndStoreCookies = async () => {
+  let debug = parseStringToBoolean(process.env.GARMIN_CONNECT_DEBUG)
+    const localCookies = "./cookies.json"
+  if (debug) {
+    // check if existing local cookies are still good
+    if (fs.existsSync(localCookies)) {
+      let existingCookies = fs.readFileSync(localCookies)
+      existingCookies = JSON.parse(existingCookies)
+      // check if cookies are still valid
+      const { status } = await ping(formatCookies(existingCookies))
+      // if valid then short circuit
+      if (status === 200) return
+    }
+  }
+
   let { cookies } = await getCookies()
+  if (debug) fs.writeFileSync(localCookies, JSON.stringify(cookies, null, 4));
   process.env.COOKIES = formatCookies(cookies)
 }
 
@@ -112,13 +131,14 @@ const addHeaders = (headers, config) => {
 }
 
 const requestInterceptor = async (config) => {
+  // add some required headers
   addHeaders({
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0',
     'NK': 'NT'
   }, config)
   try {
     if (!process.env.COOKIES) throw new InvalidCookiesError("no cookies set")
-    const { status } = await ping()
+    const { status } = await ping(process.env.COOKIES)
     if (status !== 200) {
       delete process.env.COOKIES
       throw new InvalidCookiesError("cookies expired, get new")
@@ -126,16 +146,21 @@ const requestInterceptor = async (config) => {
   } catch (error) {
     if (error instanceof InvalidCookiesError) {
       await getAndStoreCookies()
-      addHeaders({"Cookie": process.env.COOKIES}, config)
     }
     else {
       throw error
     }
   }
+  addHeaders({ "Cookie": process.env.COOKIES }, config)
   return config
 }
 
-const setInterceptors = (client) => {
+const setInterceptors = ({ client, credentials, debug = false }) => {
+  process.env.GARMIN_CONNECT_DEBUG = debug
+  if (!credentials.password) throw new Error("Missing password")
+  if (!credentials.username) throw new Error("Missing username")
+  process.env.GARMIN_CONNECT_USERNAME = credentials.username
+  process.env.GARMIN_CONNECT_PASSWORD = credentials.password
   client.interceptors.request.use(requestInterceptor, undefined);
 }
 
