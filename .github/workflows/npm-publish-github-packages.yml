@@ -4,14 +4,15 @@
 name: Node.js Package
 
 on:
-  release:
-    types: [created]
+  create:
+    tags:
+      - v*
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}} 
+      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}}
       GARMIN_CONNECT_PASSWORD: ${{secrets.GARMIN_CONNECT_PASSWORD}}
     steps:
       - uses: actions/checkout@v3
@@ -25,8 +26,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}} 
-      GARMIN_CONNECT_PASSWORD: ${{secrets.GARMIN_CONNECT_PASSWORD}}    
+      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}}
+      GARMIN_CONNECT_PASSWORD: ${{secrets.GARMIN_CONNECT_PASSWORD}}
     permissions:
       contents: read
       packages: write
