@@ -165,5 +165,6 @@ const setInterceptors = ({ client, credentials, debug = false }) => {
 }
 
 module.exports = {
-  setInterceptors
+  setInterceptors,
+  getCookies
 }
