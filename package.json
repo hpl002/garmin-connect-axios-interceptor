@@ -1,8 +1,8 @@
 {
-  "name": "garmin-connect-express-middleware",
+  "name": "garmin-connect-axios-interceptor",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:hpl002/garmin-connect-express-middleware.git",
+  "main": "./src/index.js",
+  "repository": "git@github.com:hpl002/garmin-connect-axios-interceptor.git",
   "author": "Herman Stoud Platou <hsplatou@gmail.com>",
   "license": "MIT",
   "dependencies": {
