@@ -9,23 +9,8 @@ on:
       - v*
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}}
-      GARMIN_CONNECT_PASSWORD: ${{secrets.GARMIN_CONNECT_PASSWORD}}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm install
   publish-gpr:
-    needs: build
     runs-on: ubuntu-latest
-    env:
-      GARMIN_CONNECT_USERNAME: ${{secrets.GARMIN_CONNECT_USERNAME}}
-      GARMIN_CONNECT_PASSWORD: ${{secrets.GARMIN_CONNECT_PASSWORD}}
     permissions:
       contents: read
       packages: write
