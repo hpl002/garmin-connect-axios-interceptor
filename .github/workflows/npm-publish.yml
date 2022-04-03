@@ -6,28 +6,21 @@ name: Node.js Package
 on:
   push:
     branches:
-    - main
+      - main
+    tags:
+      - "v*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm test
-
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - id: extract-semver
+        run: export INPUT=${{ github.ref }}; echo "::set-output name=version::${INPUT#refs/tags/v}"
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm publish
+      - run: npm publish --tag ${{ steps.extract-semver.outputs.version }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
