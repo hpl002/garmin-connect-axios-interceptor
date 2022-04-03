@@ -13,9 +13,7 @@
     "jest": "^27.5.1"
   },
   "scripts": {
-    "test": "jest"
-  },
-  "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "test": "jest",
+    "cicd": "act create"
   }
 }
