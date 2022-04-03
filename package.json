@@ -1,6 +1,6 @@
 {
   "name": "garmin-connect-axios-interceptor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./src/index.js",
   "repository": "git@github.com:hpl002/garmin-connect-axios-interceptor.git",
   "author": "Herman Stoud Platou <hsplatou@gmail.com>",
